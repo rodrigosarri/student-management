@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <% if (code && code !== 'novo') { %>
+    <h5 class="modal-title" id="modalLabel">Editando o (a) aluno (a): <strong><%= name %></strong></h5>
+    <% } else { %>
+    <h5 class="modal-title" id="modalLabel">Adicionar novo aluno</h5>
+    <% } %>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+  <div  class="modal-body">
+    <form action="http://localhost:8080/salvar" method="POST">
+        <% if (code && code !== 'novo') { %>
+        <input type="hidden" id="code" name="code" value="<%= code %>">
+        <% } %>
+        <div class="mb-3">
+            <label for="name" class="form-label">Nome do aluno</label>
+            <input type="text" class="form-control" id="name" name="name" value="<%= name %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="nota" class="form-label">Nota Checkpoint 1</label>
+            <input type="number" class="form-control" id="checkpoint1" name="checkpoint1" min="0" max="10" value="<%= checkpoint1 %>" required>
+            <div id="notaHelp" class="form-text">De 0 a 10</div>
+        </div>
+        <div class="mb-3">
+            <label for="nota" class="form-label">Nota Checkpoint 2</label>
+            <input type="number" class="form-control" id="checkpoint2" name="checkpoint2" min="0" max="10" value="<%= checkpoint2 %>" required>
+            <div id="notaHelp" class="form-text">De 0 a 10</div>
+        </div>
+        <div class="mb-3">
+            <label for="nota" class="form-label">Nota Checkpoint Final</label>
+            <input type="number" class="form-control" id="checkpoint3" name="checkpoint3" min="0" max="10" value="<%= checkpoint3 %>" required>
+            <div id="notaHelp" class="form-text">De 0 a 10</div>
+        </div>        
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="active" name="active" <%= active ? 'checked="checked"' : '' %>" required>
+            <label class="form-check-label" for="active">Ativo</label>
+        </div>
+        <button onclick="postData()" type="button" class="btn btn-primary">Salvar</button>
+    </form>    
+  </div>
+

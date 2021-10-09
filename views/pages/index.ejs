@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <title>Controle de Alunos</title>
+    <style type="text/css">
+      #list {
+        display: flex;
+        align-items: center;
+        justify-content: center;        
+      }
+
+      #list div:not(.spinner-border) {
+        flex: 1 1 auto;
+      }
+
+      .spinner-border {
+        width: 5rem;
+        height: 5rem;
+      }
+    </style>
+
+    <script>
+      const baseUrl = 'http://localhost:8080';
+
+      const getForm = (id) => {
+        const xhttp = new XMLHttpRequest();
+
+        xhttp.onload = function() {
+          document.getElementById('modal-form').innerHTML = this.responseText;
+        }
+
+        xhttp.open('GET', `${baseUrl}/form/${id}`, true);
+        xhttp.send();
+      }
+
+      const loading = () => {
+        const spinner = '<div class="spinner-border" role="status"><span class="sr-only"></span></div>';
+        document.getElementById('list').innerHTML = spinner;
+      }
+
+      const getList = () => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+          document.getElementById('list').innerHTML = this.responseText;
+        }
+
+        xhttp.open('GET', `${baseUrl}/list`, true);
+        xhttp.send();
+      }
+
+      const removeElem = (elms) => elms.forEach(el => el.remove());
+
+      const postData = () => {
+        let code = null, name, checkpoint1, checkpoint2, checkpoint3, active;
+
+        if (document.getElementById('code')) {
+          code = document.getElementById('code').value;
+        }
+
+        name        = document.getElementById('name').value;
+        checkpoint1 = document.getElementById('checkpoint1').value;
+        checkpoint2 = document.getElementById('checkpoint2').value;
+        checkpoint3 = document.getElementById('checkpoint3').value;
+        active      = document.getElementById('active').checked;
+
+        const xhttp = new XMLHttpRequest();
+        xhttp.open('POST', `${baseUrl}/save`, true);
+
+        const modal = document.getElementById('modal');
+        modal.classList.remove('show');
+
+        const body = document.getElementById('body');
+        body.classList.remove('modal-open');
+        body.removeAttribute('style');
+
+        removeElem(document.querySelectorAll('.modal-backdrop'));
+
+        xhttp.onload = function () {
+          loading();
+
+          setTimeout(() => {
+            getList();
+          }, 2e3);          
+        };
+
+        xhttp.send(`code=${code}&name=${name}&checkpoint1=${checkpoint1}&checkpoint2=${checkpoint2}&checkpoint3=${checkpoint3}&active=${active}`);
+      }
+
+      const deleteItem = (id) => {
+        const xhttp = new XMLHttpRequest();
+
+        loading();
+
+        xhttp.onload = function() {
+          setTimeout(() => {
+            getList();
+          }, 2e3);
+        }
+
+        xhttp.open('DELETE', `${baseUrl}/delete/${id}`, true);
+        xhttp.send();  
+      }
+            
+    </script>
+</head>
+<body id="body">
+    <main class="container">
+        <h1>Controle de Alunos</h1>
+        <button onclick="getForm('new')" type="button" class="btn btn-primary my-5" data-bs-toggle="modal" data-bs-target="#modal">Adicionar novo aluno</button>
+        <div id="list">
+          <%- include('list') %>
+        </div>
+    </main>
+
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div id="modal-form" class="modal-content">
+
+          </div>
+        </div>
+      </div>    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+</body>
+</html>

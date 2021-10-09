@@ -1,0 +1,24 @@
+{
+  "name": "students",
+  "version": "1.0.0",
+  "description": "Controle de alunos",
+  "main": "students.js",
+  "scripts": {
+    "start": "nodemon students.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "controle de alunos",
+    "crud",
+    "js"
+  ],
+  "author": "Rodrigo Sarri",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
