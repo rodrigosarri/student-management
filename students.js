@@ -103,9 +103,7 @@ app.post('/save', (req, res) => {
                         'msg'   : `Não foi encontrado o registro com o código: ${code}`
                     });                    
                 }
-
-                console.log(jsonData.data[index]);
-
+                
                 jsonData.data[index] = {
                     code: params.get('code'),
                     name,
